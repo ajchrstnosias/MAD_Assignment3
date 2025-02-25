@@ -12,7 +12,6 @@ class ProductProvider extends ChangeNotifier {
   void add(Product p) {
     _products.add(p);
     notifyListeners();
-    Navigator.pop;
   }
 
   void toggleFav(int i) {
@@ -22,6 +21,10 @@ class ProductProvider extends ChangeNotifier {
 
   void deleteProduct(int i) {
     _products.removeAt(i);
+    notifyListeners();
+  }
+
+  void notify() {
     notifyListeners();
   }
 }

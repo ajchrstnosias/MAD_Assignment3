@@ -18,9 +18,17 @@ class ProductScreen extends StatelessWidget {
           appBar: AppBar(
             title: Text("View Products"),
             actions: [
-              IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.shopping_cart_outlined),
+              Stack(
+                children: [
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: Text(cartItems.totalCount.toString()),
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    icon: Icon(Icons.shopping_cart_outlined),
+                  ),
+                ],
               ),
               IconButton(
                 onPressed: () => showAddDialog(context),
@@ -120,6 +128,31 @@ class ProductScreen extends StatelessWidget {
   }
 
   void doDelete(BuildContext context, int i) {
-    Provider.of<ProductProvider>(context, listen: false).deleteProduct(i);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Delete product"),
+          content: Text("Are you sure you want to delete this Product?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Provider.of<ProductProvider>(context, listen: false).notify();
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed:
+                  () => Provider.of<ProductProvider>(
+                    context,
+                    listen: false,
+                  ).deleteProduct(i),
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
